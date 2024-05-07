@@ -27,20 +27,27 @@ export class AccountService {
    * @param model Object containing login credentials.
    * @returns Observable of User object.
    */
-  login(model:any){
+  login(model: any): Observable<boolean> {
     return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
-      map((response:User)=>{
+      map((response: User) => {
         // On successful login response
         const user = response;
-        if(user){
+        if (user) {
           // Save user data to local storage
           localStorage.setItem('user', JSON.stringify(user));
           // Update current user source with new user data
           this.currentUserSource.next(user);
+          // Emit true to indicate successful login
+          return true;
+        } else {
+          // Emit false if user is null or undefined
+          return false;
         }
       })
     );
   }
+
+
 
   register(model:any){
     return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(

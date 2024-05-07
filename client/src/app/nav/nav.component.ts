@@ -29,7 +29,7 @@ export class NavComponent implements OnInit {
   login() {
     // Log the start of the login process.
     console.log('Login');
-    this.router.navigateByUrl('/members');
+
     // Log the user credentials being used for login.
     console.log(this.model);
 
@@ -42,6 +42,8 @@ export class NavComponent implements OnInit {
 
         // Log the response received from the server.
         console.log(response);
+
+        // Redirection will be handled by the guard
       },
       // Handle the error event emitted by the observable (login failure).
       error: (error) => {
@@ -53,6 +55,7 @@ export class NavComponent implements OnInit {
       },
     });
   }
+
 
   logout() {
     this.accountSvc.logout();
