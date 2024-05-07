@@ -1,0 +1,37 @@
+<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+  <h2 class="text-center text-primary">Sign Up</h2>
+  <hr>
+  <div class="mb-3">
+    <input type="text"
+            class="form-control"
+            name="username"
+            [(ngModel)]="model.username"
+            placeholder="Username"
+            required
+            #username="ngModel"> <!-- Agrega el atributo #username para acceder al control de este campo en el formulario -->
+    <div *ngIf="username.invalid && (username.dirty || username.touched)" class="text-danger">
+      <!-- Muestra un mensaje de error si el campo es inválido y ha sido tocado por el usuario -->
+      Username is required
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <input type="password"
+            class="form-control"
+            name="password"
+            [(ngModel)]="model.password"
+            placeholder="Password"
+            required
+            #password="ngModel"> <!-- Agrega el atributo #password para acceder al control de este campo en el formulario -->
+    <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
+      <!-- Muestra un mensaje de error si el campo es inválido y ha sido tocado por el usuario -->
+      Password is required
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button class="btn btn-success me-2" type="submit" [disabled]="registerForm.invalid">Register</button>
+    <!-- Deshabilita el botón de registro si el formulario es inválido -->
+    <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
+  </div>
+</form>
