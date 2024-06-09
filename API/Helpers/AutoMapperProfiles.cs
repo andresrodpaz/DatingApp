@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.DTOs;
+using API.Entities;
 using API.Extensions;
 using AutoMapper;
 
@@ -14,5 +15,7 @@ public class AutoMapperProfiles:Profile
         
         
         CreateMap<Photo, PhotoDTO>();
+
+        CreateMap<MemberUpdateDto, AppUser>();
     }
 }

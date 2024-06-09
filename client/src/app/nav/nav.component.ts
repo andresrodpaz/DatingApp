@@ -39,7 +39,7 @@ export class NavComponent implements OnInit {
       next: (response) => {
         // Log that the login was successful.
         console.log('Login OK');
-
+        this.router.navigateByUrl('/members')
         // Log the response received from the server.
         console.log(response);
 

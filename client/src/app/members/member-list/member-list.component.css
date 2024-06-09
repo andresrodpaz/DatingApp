@@ -1,0 +1,49 @@
+/* Estilos para el carrusel */
+#carouselExampleIndicators {
+  background-color: #f8f9fa; /* Fondo del carrusel */
+}
+
+.carousel-item {
+  text-align: center; /* Centrar contenido */
+}
+
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para la leyenda */
+  color: white; /* Texto en la leyenda */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 10px; /* Espaciado interno */
+}
+
+/* Estilos para las flechas de navegación */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1); /* Iconos de flechas blancos */
+}
+
+/* Estilos para los indicadores del carrusel */
+.carousel-indicators {
+  margin-bottom: 20px; /* Espacio entre el carrusel y los indicadores */
+}
+
+.carousel-indicators li {
+  border-radius: 50%; /* Círculos para los indicadores */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  border: 2px solid #fff; /* Borde blanco */
+  width: 12px; /* Tamaño */
+  height: 12px; /* Tamaño */
+}
+
+.carousel-indicators .active {
+  background-color: #fff; /* Fondo blanco para el indicador activo */
+}
+
+/* Estilos para las tarjetas de miembro */
+.carousel-item img {
+  border-radius: 10px; /* Bordes redondeados para las imágenes */
+}
