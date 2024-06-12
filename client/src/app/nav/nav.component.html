@@ -22,7 +22,8 @@
 
       <!-- Dropdown menu for authenticated users -->
       <div class="dropdown" *ngIf="accountSvc.currentUser$ | async as currentUser" dropdown>
-        <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{currentUser.username | titlecase}}</a>
+        <img src="{{currentUser.photoUrl || './assets/user.png'}}" alt="user photo">
+        <a class="dropdown-toggle text-light ms-2" dropdownToggle>Welcome {{currentUser.username | titlecase}}</a>
         <div class="dropdown-menu" *dropdownMenu>
           <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
           <a class="dropdown-item" (click)="logout()">Logout</a>

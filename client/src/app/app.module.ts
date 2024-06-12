@@ -25,6 +25,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import {CustomDateParser} from './pipes/custom-date-parser.pipe';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 
 
 
@@ -43,6 +44,7 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     BadRequestComponent,
     MemberCardComponent,
     MemberEditComponent,
+    PhotoEditorComponent,
   ],
   imports: [
     BrowserModule,

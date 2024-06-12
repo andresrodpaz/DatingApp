@@ -9,6 +9,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { TabsModule } from 'ngx-bootstrap/tabs'
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [CustomDateParser],
@@ -22,14 +23,16 @@ import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
     CarouselModule.forRoot(),
     NgxSpinnerModule.forRoot({
       type: 'fire'
-    })
+    }),
+    FileUploadModule
   ],
   exports:[
     BsDropdownModule,
     ToastrModule,
     TabsModule,
     CustomDateParser,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    FileUploadModule
   ]
 })
 export class SharedModule { }
