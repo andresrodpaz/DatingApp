@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TimeagoModule } from 'ngx-timeago';
 import { Member } from 'src/app/_models/member';
 import { SharedModule } from 'src/app/_modules/shared.module';
 import { MembersService } from 'src/app/_services/members.service';
@@ -13,7 +14,7 @@ import { CustomDateParser } from 'src/app/pipes/custom-date-parser.pipe';
   standalone: true,
   templateUrl: './member-detail.component.html',
   styleUrls: ['./member-detail.component.css'],
-  imports:[CommonModule, TabsModule, GalleryModule, SharedModule]
+  imports:[CommonModule, TabsModule, GalleryModule, TimeagoModule ,SharedModule]
 })
 export class MemberDetailComponent implements OnInit {
 

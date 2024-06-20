@@ -1,4 +1,5 @@
 ﻿using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -34,12 +35,53 @@ namespace API.Data
             .SingleOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Retrieves a paginated list of members based on the specified user parameters.
+        /// </summary>
+        /// <param name="userParams">An object containing the filtering and pagination parameters.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a paginated list of MemberDTOs.</returns>
+        public async Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams)
+        {
+            // Create an IQueryable from the Users table in the database context.
+            var query = _context.Users.AsQueryable();
+
+            // Filter the users to exclude the one with the current username.
+            query = query.Where(u => u.UserName != userParams.CurrentUsername);
+
+            // Further filter the users based on the specified gender.
+            query = query.Where(u => u.Gender == userParams.Gender);
+
+            // Calculate the minimum date of birth based on the maximum age provided in user parameters.
+            var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge - 1));
+
+            // Calculate the maximum date of birth based on the minimum age provided in user parameters.
+            var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge));
+
+            // Filter the users based on the date of birth range calculated.
+            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+
+            query = userParams.OrderBy switch{
+                "created" => query.OrderByDescending(u => u.Created),
+                _ => query.OrderByDescending(u => u.LastActive)
+            };
+
+            // Project the filtered query to MemberDTOs, disable change tracking for better performance,
+            // and paginate the results.
+            return await PagedList<MemberDTO>.CreateAsync(
+                query.AsNoTracking().ProjectTo<MemberDTO>(_mapper.ConfigurationProvider),
+                userParams.PageNumber,
+                userParams.PageSize);
+        }
+
+
+        /*
         public async Task<IEnumerable<MemberDTO>> GetMembersAsync()
         {
             return await _context.Users
                                     .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
                                     .ToListAsync();
         }
+        */
 
         /// <summary>
         /// Retrieves a user by their identifier asynchronously.

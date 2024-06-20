@@ -30,7 +30,8 @@ public class TokenService : ITokenService
         // Define a list of claims for the token, including the user's NameId (username)
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+            new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
         };
 
         // Create SigningCredentials using the SymmetricSecurityKey and HmacSha512Signature algorithm

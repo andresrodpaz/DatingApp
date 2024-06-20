@@ -1,32 +1,40 @@
-<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+<form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
   <h2 class="text-center text-primary">Sign Up</h2>
   <hr>
-  <div class="mb-3">
-    <input type="text"
-            class="form-control"
-            name="username"
-            [(ngModel)]="model.username"
-            placeholder="Username"
-            required
-            #username="ngModel"> <!-- Agrega el atributo #username para acceder al control de este campo en el formulario -->
-    <div *ngIf="username.invalid && (username.dirty || username.touched)" class="text-danger">
-      <!-- Muestra un mensaje de error si el campo es inválido y ha sido tocado por el usuario -->
-      Username is required
-    </div>
-  </div>
 
   <div class="mb-3">
-    <input type="password"
-            class="form-control"
-            name="password"
-            [(ngModel)]="model.password"
-            placeholder="Password"
-            required
-            #password="ngModel"> <!-- Agrega el atributo #password para acceder al control de este campo en el formulario -->
-    <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
-      <!-- Muestra un mensaje de error si el campo es inválido y ha sido tocado por el usuario -->
-      Password is required
-    </div>
+    <label style="margin-right: 10px;">I am a: </label>
+    <br>
+    <br>
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" value="male" formControlName="gender">Man
+    </label>
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" value="female" formControlName="gender">Woman
+    </label>
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" value="non-binary" formControlName="gender">Non-binary
+    </label>
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" value="other" formControlName="gender">Prefer not to say
+    </label>
+  </div>
+  <hr>
+  <app-text-input [formControl]="$any(registerForm.controls['username'])" [label]="'Username'"></app-text-input>
+  <app-text-input [formControl]="$any(registerForm.controls['knownAs'])" [label]="'Known As'"></app-text-input>
+  <app-date-picker [formControl]="$any(registerForm.controls['dateOfBirth'])" [label]="'Date of Birth'"></app-date-picker>
+  <app-text-input [formControl]="$any(registerForm.controls['city'])" [label]="'City'"></app-text-input>
+  <app-text-input [formControl]="$any(registerForm.controls['country'])" [label]="'Country'"></app-text-input>
+
+  <app-text-input [formControl]="$any(registerForm.controls['password'])" [label]="'Password'" [type]="'password'"></app-text-input>
+  <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" [label]="'Confirm Password'" [type]="'password'"></app-text-input>
+
+  <div class="row" *ngIf="validationErrors">
+    <ul class="text-danger">
+      <li *ngFor="let error of validationErrors">
+        {{error}}
+      </li>
+    </ul>
   </div>
 
   <div class="text-center">
@@ -35,3 +43,5 @@
     <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
   </div>
 </form>
+
+

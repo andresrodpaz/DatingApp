@@ -8,7 +8,16 @@ export class CustomDateParser implements PipeTransform {
     const currentDate = new Date();
     const date = new Date(value);
 
-    const diffTime = Math.abs(currentDate.getTime() - date.getTime());
+    // Convertir ambas fechas a UTC
+    const utcCurrentDate = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()));
+    const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+
+    // Si las fechas son iguales, devuelve 'today'
+    if (utcCurrentDate.getTime() === utcDate.getTime()) {
+      return 'today';
+    }
+
+    const diffTime = Math.abs(utcCurrentDate.getTime() - utcDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays === 1) {
@@ -23,8 +32,6 @@ export class CustomDateParser implements PipeTransform {
       return 'a month ago';
     } else if (diffDays < 365) {
       return 'a few months ago';
-    } else if (diffDays < 730) {
-      return 'a year ago';
     } else {
       const diffYears = Math.floor(diffDays / 365);
       return `${diffYears} years ago`;

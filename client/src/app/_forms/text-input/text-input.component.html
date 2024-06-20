@@ -1,0 +1,44 @@
+<div class="mb-3">
+  <input type="{{type}}"
+         [class.is-invalid]="control.touched && control.invalid"
+         class="form-control"
+         [name]="label.toLowerCase().replace(' ', '-')"
+         [formControl]="control"
+         [placeholder]="label">
+
+  <div *ngIf="control.errors?.['required'] && control.touched" class="invalid-feedback">
+    <ng-container *ngIf="label === 'Username'">
+      Please enter a username. Your dating alter ego awaits!
+    </ng-container>
+    <ng-container *ngIf="label === 'Password'">
+      Please enter a {{label}}. Don't worry, we won't judge your creativity!
+    </ng-container>
+    <ng-container *ngIf="label === 'Confirm Password'">
+      Please confirm your password. We need to make sure they match!
+    </ng-container>
+    <ng-container *ngIf="label === 'Known As'">
+      Hey, let us know what you'd like to be known as. Be as creative as you want!
+    </ng-container>
+    <ng-container *ngIf="label === 'Date of Birth'">
+      Your birthdate is important! It's like your dating horoscope, but real.
+    </ng-container>
+    <ng-container *ngIf="label === 'City'">
+      Where's your dating HQ? Let's find out!
+    </ng-container>
+    <ng-container *ngIf="label === 'Country'">
+      Your dating adventure awaits in {{ control.value }}!
+    </ng-container>
+  </div>
+
+  <div class="invalid-feedback" *ngIf="control.errors?.['minlength'] && control.touched">
+    {{label}} must be at least 4 characters. No, '123' is not enough!
+  </div>
+
+  <div class="invalid-feedback" *ngIf="control.errors?.['maxlength'] && control.touched">
+    {{label}} must be at most 20 characters. Keep it brief, like a great pickup line!
+  </div>
+
+  <div class="invalid-feedback" *ngIf="control.errors?.['notMatching'] && control.touched">
+    Oops! It looks like your passwords are having a bit of an identity crisis. They don't match! Let's give them another try and make sure they're best buddies.
+  </div>
+</div>

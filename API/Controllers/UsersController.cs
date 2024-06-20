@@ -4,6 +4,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
+[ServiceFilter(typeof(LogUserActivity))]
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
@@ -27,8 +29,18 @@ public class UsersController:ControllerBase
     }
 
     [HttpGet]
-    public  async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers(){
-        var users = await _repository.GetMembersAsync();
+    public  async Task<ActionResult<PagedList<MemberDTO>>> GetUsers([FromQuery] UserParams userParams){
+        
+        var currentUser = await _repository.GetUserByUsernameAsync(User.GetUsername());
+        userParams.CurrentUsername = currentUser.UserName;
+        
+        if(string.IsNullOrEmpty(userParams.Gender)){
+            userParams.Gender = currentUser.Gender == "male" ? "female" : "male";
+        }
+
+        var users = await _repository.GetMembersAsync(userParams);
+        Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, 
+        users.TotalCount, users.TotalPages));
         return Ok(users);
         
     }
@@ -48,10 +60,10 @@ public class UsersController:ControllerBase
     public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto){
 
         // Retrieve the username from the current user's claims.
-        var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         // Asynchronously fetch the user entity from the repository using the username.
-        var user = await _repository.GetUserByUsernameAsync(username);
+        var user = await _repository.GetUserByIdAsync(int.Parse(userId));
 
         // If the user is not found, return a NotFound result.
         if(user == null) return NotFound();

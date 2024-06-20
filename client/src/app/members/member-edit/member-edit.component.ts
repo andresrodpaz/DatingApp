@@ -13,42 +13,66 @@ import { MembersService } from 'src/app/_services/members.service';
   styleUrls: ['./member-edit.component.css']
 })
 export class MemberEditComponent implements OnInit {
+  @ViewChild('editForm', { static: false }) editForm: NgForm | undefined;
 
-  @ViewChild('editForm') editForm : NgForm | undefined;
-
-  @HostListener('window:beforeunload', ['$event']) unloadNotification($event:any){
-    if(this.editForm?.dirty){
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (this.editForm?.dirty) {
       $event.returnValue = true;
     }
   }
 
-  member: Member |undefined;
+  member: Member | undefined;
   user: User | null = null;
 
-  constructor(private accountSvc:AccountService, private memberSvc:MembersService, private toastr:ToastrService) {
-    this.accountSvc.currentUser$.pipe(take(1)).subscribe({
-      next: user => this.user = user
-    })
-  }
+  constructor(
+    private accountSvc: AccountService,
+    private memberSvc: MembersService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loadMember();
   }
 
-  loadMember(){
-    if(!this.user) return;
-    this.memberSvc.getMember(this.user.username).subscribe({
-      next: member => this.member = member
-    })
+  loadMember(): void {
+    this.accountSvc.currentUser$.pipe(take(1)).subscribe({
+      next: (user: User | null) => {
+        if (user) {
+          this.user = user;
+          this.memberSvc.getMember(user.username).subscribe({
+            next: (member: Member | undefined) => {
+              this.member = member;
+            },
+            error: (error: any) => {
+              console.error('Error loading member: ', error);
+            }
+          });
+        }
+      },
+      error: (error: any) => {
+        console.error('Error loading current user: ', error);
+      }
+    });
   }
 
-  updateMember(){
-    this.memberSvc.updateMember(this.editForm?.value).subscribe({
-      next: _ =>{
+  updateMember(): void {
+    if (!this.editForm || !this.editForm.valid || !this.member) {
+      return;
+    }
+    console.log(this.member);
+    this.memberSvc.updateMember(this.member).subscribe({
+      next: () => {
         this.toastr.success('Profile updated successfully');
-        this.editForm?.reset(this.member);
+        if (this.editForm) {
+          this.editForm.reset(this.member);
+        }
+      },
+      error: (error: any) => {
+        console.error('Error updating member: ', error);
+        this.toastr.error('Failed to update profile');
       }
-    })
+    });
   }
 
 }

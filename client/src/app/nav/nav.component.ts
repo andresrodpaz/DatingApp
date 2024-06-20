@@ -15,6 +15,7 @@ export class NavComponent implements OnInit {
   model: any = {};
   currentUser$ : Observable<User | null > = of(null);
 
+  isNavbarCollapsed = true;
   constructor(public accountSvc: AccountService,private router:Router, private toastr:ToastrService) {}
   ngOnInit(): void {
     this.currentUser$ = this.accountSvc.currentUser$;
@@ -60,5 +61,15 @@ export class NavComponent implements OnInit {
   logout() {
     this.accountSvc.logout();
     this.router.navigateByUrl('/');
+  }
+
+  // Método para manejar el estado del menú hamburguesa
+  toggleNavbar() {
+    this.isNavbarCollapsed = !this.isNavbarCollapsed; // Invierte el estado del menú
+  }
+
+  // Método para cerrar el menú después de hacer clic en un enlace
+  closeNavbar() {
+    this.isNavbarCollapsed = true;
   }
 }
