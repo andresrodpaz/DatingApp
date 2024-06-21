@@ -25,6 +25,7 @@ export class MemberListComponent implements OnInit {
     { value: 'other', display: 'Others' }
   ];
 
+
   constructor(private memberSvc: MembersService) {
       this.userParams = this.memberSvc.getUserParams();
   }
@@ -62,5 +63,8 @@ export class MemberListComponent implements OnInit {
       this.loadMembers();
     }
   }
+
+
+
 
 }

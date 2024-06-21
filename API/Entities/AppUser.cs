@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using API.Extensions;
+using API.Entities;
 namespace API.Entities;
 public class AppUser
 {
@@ -23,5 +24,8 @@ public class AppUser
     // public int GetAge(){
     //     return DateOfBirth.CalculateAge();
     // }
+
+    public List<UserLike> LikedByUsers {get; set;} = new();
+    public List<UserLike> LikedUsers {get; set;} = new ();
 
 }
