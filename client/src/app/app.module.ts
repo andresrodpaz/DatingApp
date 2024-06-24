@@ -29,6 +29,8 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DatePickerComponent } from './_forms/date-picker/date-picker.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BytesPipe } from './pipes/bytes.pipe';
+
 
 
 
@@ -50,6 +52,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     PhotoEditorComponent,
     TextInputComponent,
     DatePickerComponent,
+    BytesPipe,
   ],
   imports: [
     BrowserModule,

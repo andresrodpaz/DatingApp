@@ -23,7 +23,7 @@ export class ListsComponent implements OnInit {
   constructor(private memberSvc : MembersService){}
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+
   }
 
   loadLikes(){
