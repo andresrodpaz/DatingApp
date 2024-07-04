@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit{
   model:any = {};
   registerForm : FormGroup = new FormGroup({});
   validationErrors:string[] | undefined;
+  passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,20}$/;
 
   constructor(private accountSvc:AccountService, private toast:ToastrService, private fb:FormBuilder, private router:Router) { }
 
@@ -72,7 +73,10 @@ initializeForm(){
     city: ['', Validators.required],
     country: ['', Validators.required],
     password: ['', [
-      Validators.minLength(4), Validators.maxLength(20)
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(20),
+      Validators.pattern(this.passwordPattern)
     ]],
     confirmPassword:  ['', [Validators.required, this.matchValues('password')]],
   });

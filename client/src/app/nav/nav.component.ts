@@ -43,8 +43,6 @@ export class NavComponent implements OnInit {
         this.router.navigateByUrl('/members')
         // Log the response received from the server.
         console.log(response);
-
-        // Redirection will be handled by the guard
       },
       // Handle the error event emitted by the observable (login failure).
       error: (error) => {

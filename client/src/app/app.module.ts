@@ -30,6 +30,14 @@ import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DatePickerComponent } from './_forms/date-picker/date-picker.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BytesPipe } from './pipes/bytes.pipe';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { HasRoleDirective } from './_directives/has-role.directive';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { RoleModalComponent } from './modals/role-modal/role-modal.component';
+import { UserblockModalComponent } from './modals/userblock-modal/userblock-modal.component';
+import { UserdeleteModalComponent } from './modals/userdelete-modal/userdelete-modal.component';
+import { VerifyuserModalComponent } from './modals/verifyuser-modal/verifyuser-modal.component';
 
 
 
@@ -53,6 +61,14 @@ import { BytesPipe } from './pipes/bytes.pipe';
     TextInputComponent,
     DatePickerComponent,
     BytesPipe,
+    AdminPanelComponent,
+    HasRoleDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    RoleModalComponent,
+    UserblockModalComponent,
+    UserdeleteModalComponent,
+    VerifyuserModalComponent,
   ],
   imports: [
     BrowserModule,

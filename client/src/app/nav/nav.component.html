@@ -22,10 +22,14 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/messages" routerLinkActive="active" (click)="closeNavbar()">Messages</a>
           </li>
+          <li *appHasRole="['Admin']" class="nav-item">
+            <a class="nav-link" routerLink="/errors" routerLinkActive="active" (click)="closeNavbar()">Errors</a>
+          </li>
+          <li *appHasRole="['Admin', 'Moderator']" class="nav-item">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active" (click)="closeNavbar()">Admin</a>
+          </li>
         </ng-container>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/errors" routerLinkActive="active" (click)="closeNavbar()">Errors</a>
-        </li>
+
       </ul>
 
       <!-- Dropdown menu for authenticated users -->

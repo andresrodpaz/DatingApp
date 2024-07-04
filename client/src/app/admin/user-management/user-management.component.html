@@ -1,0 +1,34 @@
+<div class="row">
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th style="width: 30%;">Username</th>
+        <th style="width: 25%;">Active Roles</th>
+        <th style="width: 45%;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.username }}</td>
+        <td>{{ user.roles }}</td>
+        <td>
+          <button class="btn btn-info action-btn" (click)="openRolesModal(user)">
+            <i class="fas fa-edit"></i> Edit Role
+          </button>
+          <button class="btn btn-warning action-btn">
+            <i class="fas fa-ban"></i> Block
+          </button>
+          <button class="btn btn-warning action-btn">
+            <i class="fas fa-unlock"></i> Unblock
+          </button>
+          <button class="btn btn-danger action-btn">
+            <i class="fas fa-trash-alt"></i> Delete
+          </button>
+          <button class="btn btn-success action-btn">
+            <i class="fas fa-check-circle"></i> Verify
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

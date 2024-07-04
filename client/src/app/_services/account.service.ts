@@ -4,6 +4,8 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import { User } from '../_models/user';
 import { environment } from 'src/environments/environment';
 
+import { jwtDecode } from 'jwt-decode';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -54,12 +56,10 @@ export class AccountService {
     return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
       map( user => {
         if(user){
-          // localStorage.setItem('user', JSON.stringify(user));
-          // this.currentUserSource.next(user);
+
           this.setCurrentUser(user);
         }
-        //Just to check is OK
-        //return user;
+
       }
 
       )
@@ -71,6 +71,9 @@ export class AccountService {
    * @param user User object to set as the current user.
    */
   setCurrentUser(user:User){
+    user.roles = [];
+    const roles = this.getDecodedToken(user.token).role;
+    Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
@@ -83,4 +86,9 @@ export class AccountService {
     localStorage.removeItem('user');
     this.currentUserSource.next(null); // Notifica a los componentes que el usuario ha cerrado sesión
   }
+
+  getDecodedToken(token:string){
+    return JSON.parse(atob(token.split('.')[1]))
+  }
+
 }
