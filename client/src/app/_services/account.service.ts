@@ -5,6 +5,7 @@ import { User } from '../_models/user';
 import { environment } from 'src/environments/environment';
 
 import { jwtDecode } from 'jwt-decode';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AccountService {
   // Observable to subscribe to for changes in the current user
   currentUser$: Observable<User | null> = this.currentUserSource.asObservable();
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient, private presenceService : PresenceService) {
 
   }
 
@@ -70,13 +71,29 @@ export class AccountService {
    * Function to set the current user.
    * @param user User object to set as the current user.
    */
-  setCurrentUser(user:User){
-    user.roles = [];
-    const roles = this.getDecodedToken(user.token).role;
-    Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+  setCurrentUser(user: User) {
+    user.roles = []; // Inicializamos o reiniciamos el array de roles
+
+    // Obtenemos los roles del token decodificado
+    const roles = this.getDecodedToken(user.token)?.role;
+
+    // Verificamos si roles es un array y lo asignamos, o si no, lo agregamos al array de roles
+    if (Array.isArray(roles)) {
+      user.roles = roles;
+    } else if (roles) {
+      user.roles.push(roles);
+    }
+
+    // Almacenamos el usuario en localStorage
     localStorage.setItem('user', JSON.stringify(user));
+
+    // Emitimos el usuario actualizado al BehaviorSubject
     this.currentUserSource.next(user);
+
+    // Creamos la conexión con SignalR utilizando el servicio de presencia
+    this.presenceService.createHubConnection(user);
   }
+
 
   /**
    * Function to logout the current user.
@@ -85,6 +102,7 @@ export class AccountService {
   logout(){
     localStorage.removeItem('user');
     this.currentUserSource.next(null); // Notifica a los componentes que el usuario ha cerrado sesión
+    this.presenceService.stopHubConnection();
   }
 
   getDecodedToken(token:string){

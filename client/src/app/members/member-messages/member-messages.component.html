@@ -1,43 +1,62 @@
-<div class="card">
-  <div class="card-body">
-    <div *ngIf="messages.length === 0">
-      <h4>No messages yet, but hey, no news is good news!</h4>
-      <p>Maybe you're just too popular and everyone's speechless.</p>
-    </div>
+<div class="container py-5">
+  <div class="row d-flex justify-content-center">
+    <div class="card" id="chat1" style="border-radius: 15px;">
+      <div class="card-body">
+        <div class="messages-container" style="max-height: 400px; overflow-y: auto;">
+          <div *ngFor="let message of (messageService.messageThread$ | async)" class="chat-message">
 
-    <ul *ngIf="messages.length > 0" class="chat">
-      <li *ngFor="let message of messages">
-        <!-- Verifica que el senderUsername no sea igual al username del perfil -->
-        <ng-container *ngIf="message.senderUsername !== username">
-          <div>
-            <span class="chat-img float-end">
-              <img class="rounded-circle" src="{{message.senderPhotoUrl || '../../../../../assets/user.png'}}" alt="Sender Photo">
-            </span>
+            <!-- Mensajes -->
+            <!-- Recibidos -->
+            <ng-container *ngIf="message.senderUsername !== username; else myMessage">
+              <div class="d-flex justify-content-end align-items-center mb-4 other-message">
+                <img class="rounded-circle me-2" src="{{message.senderPhotoUrl || '../../../../../assets/user.png'}}"
+                  alt="Sender Photo" style="width: 30px; height: 30px;">
+                <span class="me-2">
+                  <i class="fa"
+                    [ngClass]="(presenceService.onlineUsers$ | async)?.includes(message.senderUsername) ? 'fa-solid fa-circle text-success' : 'fa-regular fa-circle text-muted'"></i>
+                </span>
+                <div class="p-3 ms-3 border message-body" style="border-radius: 15px; background-color: rgba(57, 192, 237, 0.2);">
+                  <p class="small mb-0">{{message.content}}</p>
+                  <small class="text-muted">
+                    <span class="fa fa-clock-o me-1"></span>{{message.messageSend | timeago}}
+                    <span class="text-danger" *ngIf="!message.dateRead && message.senderUsername !== username">(unread)</span>
+                    <span class="text-success" *ngIf="message.dateRead && message.senderUsername !== username">(read {{message.dateRead  | timeago}})</span>
+                  </small>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Enviados -->
+            <ng-template #myMessage>
+              <div class="d-flex justify-content-start align-items-center mb-4 my-message">
+                <div class="p-3 me-3 border message-body bg-body-tertiary" style="border-radius: 15px;">
+                  <p class="small mb-0">{{message.content}}</p>
+                  <small class="text-muted">
+                    <span class="fa fa-clock-o me-1"></span>{{message.messageSend | timeago}}
+                    <span class="text-danger" *ngIf="!message.dateRead && message.senderUsername !== username">(unread)</span>
+                    <span class="text-success" *ngIf="message.dateRead && message.senderUsername !== username">(read {{message.dateRead  | timeago}})</span>
+                  </small>
+                </div>
+                <img class="rounded-circle ms-2" src="{{message.senderPhotoUrl || '../../../../../assets/user.png'}}"
+                  alt="Sender Photo" style="width: 30px; height: 30px;">
+                <span class="ms-2" [class.is-online]="(presenceService.onlineUsers$ | async)?.includes(message.senderUsername)">
+                  <i class="fa"
+                    [ngClass]="(presenceService.onlineUsers$ | async)?.includes(message.senderUsername) ? 'fa-solid fa-circle text-success' : 'fa-regular fa-circle text-muted'"></i>
+                </span>
+              </div>
+            </ng-template>
           </div>
-          <div class="chat-body">
-            <div class="header">
-              <small class="text-muted">
-                <span class="fa fa-clock-o">{{message.messageSend | timeago}}</span>
-                <span class="text-danger" *ngIf="!message.dateRead && message.senderUsername !== username">(unread)</span>
-                <span class="text-success" *ngIf="message.dateRead && message.senderUsername !== username">(read {{message.dateRead  | timeago}})</span>
-              </small>
-            </div>
-            <p>{{message.content}}</p>
+        </div>
+      </div>
+      <div class="card-footer">
+        <form #messageForm="ngForm" (ngSubmit)="sendMessage()" autocomplete="off">
+          <div class="input-group">
+            <textarea name="messageContent" required [(ngModel)]="messageContent" rows="4"
+              class="form-control bg-body-tertiary" placeholder="Type your message"></textarea>
+            <button class="btn btn-primary" type="submit" [disabled]="!messageForm.valid">Send</button>
           </div>
-        </ng-container>
-      </li>
-    </ul>
-  </div>
-</div>
-
-
-<div class="card-footer">
-  <form #messageForm="ngForm" (ngSubmit)="sendMessage()" autocomplete="off">
-    <div class="input-group">
-      <input name="messageContent" required [(ngModel)]="messageContent" type="text" class="form-control input-sm" placeholder="Send a private message">
-      <div class="input-group-append">
-        <button class="btn btn-primary" type="submit" [disabled]="!messageForm.valid">Send</button>
+        </form>
       </div>
     </div>
-  </form>
+  </div>
 </div>

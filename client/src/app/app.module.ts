@@ -38,6 +38,9 @@ import { RoleModalComponent } from './modals/role-modal/role-modal.component';
 import { UserblockModalComponent } from './modals/userblock-modal/userblock-modal.component';
 import { UserdeleteModalComponent } from './modals/userdelete-modal/userdelete-modal.component';
 import { VerifyuserModalComponent } from './modals/verifyuser-modal/verifyuser-modal.component';
+import { UserunblockModalComponent } from './modals/userunlock-modal/userunblock-modal.component';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './_services/customRouteReuseStrategy';
 
 
 
@@ -69,6 +72,7 @@ import { VerifyuserModalComponent } from './modals/verifyuser-modal/verifyuser-m
     UserblockModalComponent,
     UserdeleteModalComponent,
     VerifyuserModalComponent,
+    UserunblockModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,7 +87,8 @@ import { VerifyuserModalComponent } from './modals/verifyuser-modal/verifyuser-m
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass:ErrorInterceptor, multi:true},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
+    {provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy}
   ],
   bootstrap: [AppComponent]
 })

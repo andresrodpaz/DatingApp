@@ -1,4 +1,6 @@
-.card{
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* .card{
   border: none;
 }
 .chat{
@@ -15,4 +17,135 @@
 
 .rounded-circle{
   max-height: 50px;
+} */
+/* General Styles */
+body {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+.container {
+  max-width: 800px;
+}
+
+.card {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.messages-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.card-footer {
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #ccc;
+}
+
+/* Chat Styles */
+.chat {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-message {
+  margin-bottom: 20px;
+}
+
+.my-message {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.other-message {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.chat-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.message-body {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.message-body p {
+  margin: 0;
+}
+
+.message-body small {
+  display: block;
+  margin-top: 5px;
+}
+
+.message-body .text-muted {
+  font-size: 0.75rem;
+}
+
+/* Input Styles */
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.input-group textarea {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.btn-primary {
+  background-color: #EB6864;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 15px;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #D95653;
+}
+
+/* Online Status */
+.is-online {
+  display: flex;
+  align-items: center;
+}
+
+.online-status {
+  display: flex;
+  align-items: center;
+  color: green;
+  font-weight: bold;
+}
+
+.online-status i.fa-circle {
+  margin-right: 5px;
+}
+
+.text-success {
+  color: green;
+}
+
+.text-muted {
+  color: grey;
 }
