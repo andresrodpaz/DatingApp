@@ -70,4 +70,6 @@ export class NavComponent implements OnInit {
   closeNavbar() {
     this.isNavbarCollapsed = true;
   }
+
+
 }

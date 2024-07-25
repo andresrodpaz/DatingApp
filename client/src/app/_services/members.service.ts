@@ -11,17 +11,26 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 
+/**
+ * Service to manage operations related to members, including fetching member data,
+ * updating member information, and managing likes.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
-  //memberCache = new Map();
   userParams: UserParams | undefined;
   user: User | undefined;
 
-  constructor(private http: HttpClient, private accountSvc:AccountService) {
+  /**
+   * Constructor to inject HttpClient and AccountService.
+   * Initializes userParams based on the current user.
+   * @param http - HttpClient instance for making HTTP requests.
+   * @param accountSvc - AccountService instance for managing user accounts.
+   */
+  constructor(private http: HttpClient, private accountSvc: AccountService) {
     this.accountSvc.currentUser$.pipe(take(1)).subscribe({
       next: user => {
         if (user) {
@@ -31,39 +40,65 @@ export class MembersService {
       }
     });
   }
-  getUserParams(){
+
+  /**
+   * Retrieves the current user parameters.
+   * @returns The current UserParams object.
+   */
+  getUserParams() {
     return this.userParams;
   }
-  setUserParams(params : UserParams){
+
+  /**
+   * Sets new user parameters.
+   * @param params - New UserParams object to set.
+   */
+  setUserParams(params: UserParams) {
     this.userParams = params;
   }
-  resetUserParams(){
-    if(this.user){
+
+  /**
+   * Resets user parameters to the default values based on the current user.
+   * @returns The reset UserParams object, or `undefined` if no current user is set.
+   */
+  resetUserParams() {
+    if (this.user) {
       this.userParams = new UserParams(this.user);
       return this.userParams;
     }
     return;
   }
 
-  getMembers(userPararms: UserParams) {
+  /**
+   * Fetches a paginated list of members based on user parameters.
+   * @param userParams - The parameters to filter and paginate the member list.
+   * @returns An observable of a PaginatedResult containing an array of Members.
+   */
+  getMembers(userParams: UserParams) {
     let params = getPaginationHeaders(
-      userPararms.pageNumber,
-      userPararms.pageSize
+      userParams.pageNumber,
+      userParams.pageSize
     );
 
-    params = params.append('minAge', userPararms.minAge);
-    params = params.append('maxAge', userPararms.maxAge);
-    params = params.append('gender', userPararms.gender);
-    params = params.append('orderBy', userPararms.orderBy)
+    params = params.append('minAge', userParams.minAge);
+    params = params.append('maxAge', userParams.maxAge);
+    params = params.append('gender', userParams.gender);
+    params = params.append('orderBy', userParams.orderBy);
 
     return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http);
   }
 
-
+  /**
+   * Fetches a single member by username.
+   * @param username - The username of the member to retrieve.
+   * @returns An observable of the Member object, or `of(member)` if the member is already in cache.
+   */
   getMember(username: string) {
-    // const member =[...this.memberCache.values()]
-    // .reduce((arr, elem) => arr.concat(elem.result), [])
-    // .find((member:Member)=> member.userName === username);
+    // Uncomment and use cache logic if needed
+    // const member = [...this.memberCache.values()]
+    //   .reduce((arr, elem) => arr.concat(elem.result), [])
+    //   .find((member: Member) => member.userName === username);
+
     const member = this.members.find((x) => x.userName == username);
 
     if (member) return of(member);
@@ -71,6 +106,11 @@ export class MembersService {
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 
+  /**
+   * Updates the details of a member.
+   * @param member - The Member object with updated details.
+   * @returns An observable that completes after updating the member.
+   */
   updateMember(member: Member) {
     return this.http.put(this.baseUrl + 'users', member).pipe(
       map(() => {
@@ -80,22 +120,44 @@ export class MembersService {
     );
   }
 
+  /**
+   * Sets a member's photo as the main profile photo.
+   * @param photoId - The ID of the photo to set as main.
+   * @returns An observable that completes after setting the main photo.
+   */
   setMainPhoto(photoId: number) {
     return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {});
   }
 
+  /**
+   * Deletes a member's photo.
+   * @param photoId - The ID of the photo to delete.
+   * @returns An observable that completes after deleting the photo.
+   */
   deletePhoto(photoId: number) {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
 
-  addLike(username:string){
+  /**
+   * Adds a like for a member.
+   * @param username - The username of the member to like.
+   * @returns An observable that completes after adding the like.
+   */
+  addLike(username: string) {
     return this.http.post(this.baseUrl + 'likes/' + username, {});
   }
-  getLikes(predicate:string, pageNumber:number, pageSize:number ){
 
+  /**
+   * Retrieves a paginated list of members who have been liked.
+   * @param predicate - The predicate to filter the liked members.
+   * @param pageNumber - The page number to fetch.
+   * @param pageSize - The number of items per page.
+   * @returns An observable of a PaginatedResult containing an array of Members.
+   */
+  getLikes(predicate: string, pageNumber: number, pageSize: number) {
     let params = getPaginationHeaders(pageNumber, pageSize);
     params = params.append('predicate', predicate);
 
-    return getPaginatedResult<Member[]>(this.baseUrl + 'likes' , params, this.http );
+    return getPaginatedResult<Member[]>(this.baseUrl + 'likes', params, this.http);
   }
 }

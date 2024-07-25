@@ -13,21 +13,41 @@ export class MemberCardComponent implements OnInit {
 
   @Input()
   member: Member | undefined;
+
   @Input()
   liked = false;
 
-  constructor(private memberService : MembersService,
-              private toastr : ToastrService,
-              public presenceService : PresenceService) {
+  /**
+   * Initializes a new instance of the MemberCardComponent.
+   * @param memberService - The MembersService for managing member data.
+   * @param toastr - The ToastrService for displaying notifications.
+   * @param presenceService - The PresenceService for handling presence-related functionality.
+   */
+  constructor(
+    private memberService: MembersService,
+    private toastr: ToastrService,
+    public presenceService: PresenceService
+  ) {}
 
-  }
-  ngOnInit(): void {
+  /**
+   * Angular lifecycle hook that initializes the component.
+   */
+  ngOnInit(): void {}
 
-  }
-
-  addLike(member:Member){
+  /**
+   * Adds a like to the specified member and updates the UI.
+   * @param member - The member to like.
+   */
+  addLike(member: Member) {
     this.memberService.addLike(member.userName).subscribe({
-      next: () => {this.toastr.success('You have liked ' + member.knownAs); this.liked = true;}
-    })
+      next: () => {
+        this.toastr.success('You have liked ' + member.knownAs);
+        this.liked = true;
+      },
+      error: (error) => {
+        this.toastr.error('Failed to like ' + member.knownAs);
+        console.error('Error liking member:', error);
+      }
+    });
   }
 }

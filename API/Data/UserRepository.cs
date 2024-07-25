@@ -103,6 +103,14 @@ namespace API.Data
             return await _context.Users.Include(p => p.Photos).SingleOrDefaultAsync(x => x.UserName == username);
         }
 
+        public async Task<string> GetUserGender(string username)
+        {
+            return await _context.Users
+            .Where(x => x.UserName == username)
+            .Select(x => x.Gender)
+            .FirstOrDefaultAsync();
+        }
+
         /// <summary>
         /// Retrieves all users including their associated photos asynchronously.
         /// </summary>
@@ -110,15 +118,6 @@ namespace API.Data
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.Users.Include(u => u.Photos).ToListAsync();
-        }
-
-        /// <summary>
-        /// Saves all pending changes to the database asynchronously.
-        /// </summary>
-        /// <returns><c>true</c> if one or more entities were changed; otherwise, <c>false</c>.</returns>
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
         }
 
         /// <summary>

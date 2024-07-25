@@ -25,16 +25,31 @@ export class MemberEditComponent implements OnInit {
   member: Member | undefined;
   user: User | null = null;
 
+  /**
+   * Initializes the component with services for managing account and member data.
+   * @param accountSvc - The AccountService for managing user account data.
+   * @param memberSvc - The MembersService for managing member data.
+   * @param toastr - The ToastrService for displaying notifications.
+   */
   constructor(
     private accountSvc: AccountService,
     private memberSvc: MembersService,
     private toastr: ToastrService
   ) {}
 
+  /**
+   * Angular lifecycle hook that initializes the component.
+   * Loads the current member data when the component initializes.
+   */
   ngOnInit(): void {
     this.loadMember();
   }
 
+  /**
+   * Loads the current user's member data.
+   * Subscribes to the current user observable to get the user details
+   * and then fetches the corresponding member data.
+   */
   loadMember(): void {
     this.accountSvc.currentUser$.pipe(take(1)).subscribe({
       next: (user: User | null) => {
@@ -56,6 +71,11 @@ export class MemberEditComponent implements OnInit {
     });
   }
 
+  /**
+   * Updates the current member's profile information.
+   * Subscribes to the updateMember method of the MembersService
+   * and displays a success or error message based on the response.
+   */
   updateMember(): void {
     if (!this.editForm || !this.editForm.valid || !this.member) {
       return;
@@ -74,5 +94,4 @@ export class MemberEditComponent implements OnInit {
       }
     });
   }
-
 }

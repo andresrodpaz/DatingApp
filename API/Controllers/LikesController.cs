@@ -9,66 +9,75 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
+    /// <summary>
+    /// Handles operations related to user likes, including adding likes and retrieving liked users.
+    /// </summary>
     [ApiController]
-[Route("api/[controller]")]
+    [Route("api/[controller]")]
     public class LikesController : BaseApiController
     {
-        private readonly IUserRepository _userRepository;
-        private readonly ILikesRepository _likesRepository;
-        private readonly ILogger<LikesController> _logger;
+        private readonly IUnitOfWork _uow;
 
-        public LikesController(IUserRepository userRepository, ILikesRepository likesRepository, ILogger<LikesController> logger)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LikesController"/> class.
+        /// </summary>
+        /// <param name="uow">The unit of work service for handling database operations.</param>
+        public LikesController(IUnitOfWork uow)
         {
-            _userRepository = userRepository;
-            _likesRepository = likesRepository;
-            _logger = logger;
+            _uow = uow;
         }
 
+        /// <summary>
+        /// Adds a like from the current user to another user specified by username.
+        /// </summary>
+        /// <param name="username">The username of the user to be liked.</param>
+        /// <returns>An action result indicating the success or failure of the operation.</returns>
         [HttpPost("{username}")]
         public async Task<ActionResult> AddLike(string username)
         {
             try
             {
+                // Retrieve the ID of the current user from the claims
                 var userIdStr = User.GetUserId();
                 if (string.IsNullOrEmpty(userIdStr))
                 {
-                    _logger.LogError("User.GetUserId() returned null or empty.");
                     return Unauthorized("User ID is invalid.");
                 }
 
+                // Convert user ID from string to integer
                 if (!int.TryParse(userIdStr, out var sourceUserId))
                 {
-                    _logger.LogError("Failed to parse User ID: {UserIdStr}", userIdStr);
                     return BadRequest("User ID is invalid.");
                 }
 
-                var likedUser = await _userRepository.GetUserByUsernameAsync(username);
+                // Fetch the user to be liked from the repository
+                var likedUser = await _uow.UserRepository.GetUserByUsernameAsync(username);
                 if (likedUser == null)
                 {
-                    _logger.LogWarning("Liked user not found: {Username}", username);
                     return NotFound("Liked user not found.");
                 }
 
-                var sourceUser = await _likesRepository.GetUserWithLikes(sourceUserId);
+                // Fetch the source user and their likes
+                var sourceUser = await _uow.LikesRepository.GetUserWithLikes(sourceUserId);
                 if (sourceUser == null)
                 {
-                    _logger.LogWarning("Source user not found: {SourceUserId}", sourceUserId);
                     return NotFound("Source user not found.");
                 }
 
+                // Check if the source user is trying to like themselves
                 if (sourceUser.UserName == username)
                 {
-                    _logger.LogWarning("User {Username} tried to like themselves.", username);
                     return BadRequest("You can't like yourself!");
                 }
 
-                var userLike = await _likesRepository.GetUserLike(sourceUserId, likedUser.Id);
+                // Check if the user has already liked this user
+                var userLike = await _uow.LikesRepository.GetUserLike(sourceUserId, likedUser.Id);
                 if (userLike != null)
                 {
-                    _logger.LogWarning("User {SourceUserId} already liked user {LikedUserId}", sourceUserId, likedUser.Id);
                     return BadRequest("You already liked this user.");
                 }
 
+                // Create and add the new like
                 userLike = new UserLike
                 {
                     SourceUserID = sourceUserId,
@@ -77,27 +86,36 @@ namespace API.Controllers
 
                 sourceUser.LikedUsers.Add(userLike);
 
-                if (await _userRepository.SaveAllAsync())
+                // Save changes and check for success
+                if (await _uow.Complete())
                 {
-                    _logger.LogInformation("User {SourceUserId} successfully liked user {LikedUserId}", sourceUserId, likedUser.Id);
                     return Ok();
                 }
 
-                _logger.LogError("Failed to like user {LikedUserId} by user {SourceUserId}", likedUser.Id, sourceUserId);
                 return BadRequest("Failed to like user.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while adding a like for user {Username}", username);
+                Console.WriteLine(ex.ToString());
                 return StatusCode(500, "Internal server error");
             }
         }
-        [HttpGet]
-        public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery]LikesParams likesParams)
-        {
-            likesParams.UserId = int.Parse(User.GetUserId());
-            var users = await _likesRepository.GetUserLikes(likesParams);
 
+        /// <summary>
+        /// Retrieves a paginated list of users that the current user has liked.
+        /// </summary>
+        /// <param name="likesParams">Parameters for pagination and filtering of likes.</param>
+        /// <returns>A paginated list of liked users.</returns>
+        [HttpGet]
+        public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery] LikesParams likesParams)
+        {
+            // Set the user ID from the claims to the likes parameters
+            likesParams.UserId = int.Parse(User.GetUserId());
+
+            // Retrieve the list of liked users
+            var users = await _uow.LikesRepository.GetUserLikes(likesParams);
+
+            // Add pagination headers to the response
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
 
             return Ok(users);

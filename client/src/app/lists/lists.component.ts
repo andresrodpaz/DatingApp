@@ -10,8 +10,8 @@ import { Pagination } from '../_models/pagination';
 })
 export class ListsComponent implements OnInit {
 
-  members : Member[] | undefined;
-  predicate : string = 'liked';
+  members: Member[] | undefined;
+  predicate: string = 'liked';
 
   pageNumber = 1;
   pageSize = 5;
@@ -20,25 +20,42 @@ export class ListsComponent implements OnInit {
   @Input()
   liked = false;
 
-  constructor(private memberSvc : MembersService){}
+  /**
+   * Initializes a new instance of the ListsComponent.
+   * @param memberSvc - The MembersService for fetching member data.
+   */
+  constructor(private memberSvc: MembersService) {}
 
+  /**
+   * Angular lifecycle hook that initializes the component.
+   */
   ngOnInit(): void {
-
+    this.loadLikes();
   }
 
-  loadLikes(){
+  /**
+   * Loads the list of liked members from the server.
+   */
+  loadLikes() {
     this.memberSvc.getLikes(this.predicate, this.pageNumber, this.pageSize).subscribe({
       next: response => {
         this.members = response.result;
         this.pagination = response.pagination;
+      },
+      error: error => {
+        console.error('Error loading likes:', error);
       }
-    })
+    });
   }
+
+  /**
+   * Handles page change events for pagination.
+   * @param event - The page change event containing the new page number.
+   */
   pageChanged(event: any) {
     if (this.pageNumber !== event.page) {
       this.pageNumber = event.page;
       this.loadLikes();
     }
   }
-
 }

@@ -1,0 +1,69 @@
+<div class="container" id="container">
+  <!-- Sign Up Form -->
+  <div class="form-container sign-up">
+    <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
+
+      <div class="mb-3 gender-select-container">
+        <label for="genderSelect" class="gender-label">I am a: </label>
+        <select id="genderSelect" class="form-select" formControlName="gender">
+            <option value="male">Man</option>
+            <option value="female">Woman</option>
+            <option value="non-binary">Non-binary</option>
+            <option value="other">Prefer not to say</option>
+        </select>
+    </div>
+
+
+      <app-text-input [formControl]="$any(registerForm.controls['username'])" [label]="'Username'"></app-text-input>
+  <app-text-input [formControl]="$any(registerForm.controls['knownAs'])" [label]="'Known As'"></app-text-input>
+  <app-date-picker [formControl]="$any(registerForm.controls['dateOfBirth'])" [label]="'Date of Birth'"></app-date-picker>
+  <app-text-input [formControl]="$any(registerForm.controls['city'])" [label]="'City'"></app-text-input>
+  <app-text-input [formControl]="$any(registerForm.controls['country'])" [label]="'Country'"></app-text-input>
+
+  <app-text-input [formControl]="$any(registerForm.controls['password'])" [label]="'Password'" [type]="'password'"></app-text-input>
+  <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" [label]="'Confirm Password'" [type]="'password'"></app-text-input>
+
+      <div class="row" *ngIf="validationErrors">
+        <ul class="text-danger">
+          <li *ngFor="let error of validationErrors">
+            {{error}}
+          </li>
+        </ul>
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-success me-2" type="submit" [disabled]="registerForm.invalid">Register</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Sign In Form -->
+  <div class="form-container sign-in">
+     <form #loginForm="ngForm" class="d-flex"  (ngSubmit)="login()" autocomplete="off"
+        *ngIf="!(currentUser$ | async)">
+        <input name="username" [(ngModel)]="modelLogin.username" class="form-control me-2" type="text"
+          placeholder="Username" autocomplete="off">
+        <input name="password" [(ngModel)]="modelLogin.password" class="form-control me-2" type="password"
+          placeholder="Password" autocomplete="off">
+        <button class="btn btn-outline-success" type="submit">Login</button>
+      </form>
+  </div>
+
+
+  <!-- Toggle Container -->
+  <div class="toggle-container">
+    <div class="toggle">
+      <div class="toggle-panel toggle-left">
+        <h1>Welcome Back, Heartbreaker!</h1>
+        <p>Ready to find love again? Enter your details and let the magic begin!</p>
+        <button class="hidden" id="login">Let's Reconnect</button>
+      </div>
+      <div class="toggle-panel toggle-right">
+        <h1>New Here? Cupid Awaits!</h1>
+        <p>Sign up and let us help you write your next love story. No pressure, just love!</p>
+        <button class="hidden" id="register">Join the Romance</button>
+      </div>
+    </div>
+  </div>
+
+</div>

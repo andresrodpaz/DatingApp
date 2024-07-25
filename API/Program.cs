@@ -37,11 +37,15 @@ app.UseCors(builder => builder
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<MessageHub>("hubs/message");
+
+app.MapFallbackToController("Index", "Fallback");
 
 // Seed the database
 using var scope = app.Services.CreateScope();

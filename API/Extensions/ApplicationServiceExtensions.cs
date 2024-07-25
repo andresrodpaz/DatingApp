@@ -13,21 +13,22 @@ public static class ApplicationServiceExtensions
         services.AddDbContext<DataContext>(opt =>
         {
             // Configuring the DbContext to use SQLite as the database provider.
-            opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
         });
 
         services.AddCors();
         services.AddScoped<ITokenService, TokenService>();
 
-        services.AddScoped<IUserRepository, UserRepository>();
+        
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));  
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<LogUserActivity>();
-        services.AddScoped<ILikesRepository, LikesRepository>();
-        services.AddScoped<IMessageRepository, MessageRepository>();
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
         services.AddSignalR();
         services.AddSingleton<PresenceTracker>();

@@ -15,8 +15,17 @@ export class PresenceService {
   private onlineUsersSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUsersSource.asObservable();
 
-  constructor(private toastr : ToastrService, private router:Router) { }
+  /**
+   * Initializes a new instance of the PresenceService.
+   * @param toastr - The ToastrService for showing notifications.
+   * @param router - The Router for navigation.
+   */
+  constructor(private toastr: ToastrService, private router: Router) { }
 
+  /**
+   * Creates and starts a SignalR hub connection.
+   * @param user - The user object containing the token for authentication.
+   */
   createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.hubUrl + 'presence', {
@@ -25,28 +34,35 @@ export class PresenceService {
       .withAutomaticReconnect()
       .build();
 
+    // Start the connection
     this.hubConnection.start().catch(error => console.error('Error starting SignalR connection:', error));
 
+    // Handle the 'UserIsOnline' event
     this.hubConnection.on('UserIsOnline', username => {
       this.onlineUsers$.pipe(take(1)).subscribe({
         next: usernames => this.onlineUsersSource.next([...usernames, username])
-      })
-      //this.toastr.info(username + ' has connected');
+      });
+      // Optional: Show a notification when a user comes online
+      // this.toastr.info(username + ' has connected');
     });
 
+    // Handle the 'UserIsOffline' event
     this.hubConnection.on('UserIsOffline', username => {
-
       this.onlineUsers$.pipe(take(1)).subscribe({
         next: usernames => this.onlineUsersSource.next(usernames.filter(x => x !== username))
-      })
-      //this.toastr.warning(username + ' has disconnected');
+      });
+      // Optional: Show a notification when a user goes offline
+      // this.toastr.warning(username + ' has disconnected');
     });
 
+    // Handle the 'GetOnlineUsers' event
     this.hubConnection.on('GetOnlineUsers', usernames => {
-      this.onlineUsersSource.next(usernames)
+      this.onlineUsersSource.next(usernames);
     });
+
+    // Handle the 'NewMessageReceived' event
     this.hubConnection.on('NewMessageReceived', ({ username, knownAs }) => {
-      this.toastr.info(`📬 ${knownAs} has sent you a new message! Tap here to check it out!` )
+      this.toastr.info(`📬 ${knownAs} has sent you a new message! Tap here to check it out!`)
         .onTap
         .pipe(take(1))
         .subscribe({
@@ -55,10 +71,10 @@ export class PresenceService {
     });
   }
 
+  /**
+   * Stops the SignalR hub connection.
+   */
   stopHubConnection() {
     this.hubConnection?.stop().catch(error => console.error('Error stopping SignalR connection:', error));
   }
-
-
 }
-

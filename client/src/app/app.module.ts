@@ -41,6 +41,9 @@ import { VerifyuserModalComponent } from './modals/verifyuser-modal/verifyuser-m
 import { UserunblockModalComponent } from './modals/userunlock-modal/userunblock-modal.component';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './_services/customRouteReuseStrategy';
+import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
+import { FooterComponent } from './footer/footer/footer.component';
+import { AccessComponent } from './access/access/access.component';
 
 
 
@@ -73,6 +76,9 @@ import { CustomRouteReuseStrategy } from './_services/customRouteReuseStrategy';
     UserdeleteModalComponent,
     VerifyuserModalComponent,
     UserunblockModalComponent,
+    ConfirmDialogComponent,
+    FooterComponent,
+    AccessComponent,
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,12 @@ using Microsoft.IdentityModel.Tokens;
 namespace API.Extensions;
 public static class IdentityServiceExtensions
 {
+    /// <summary>
+        /// Configures Identity and JWT authentication services for the application.
+        /// </summary>
+        /// <param name="services">The service collection to configure.</param>
+        /// <param name="config">The application's configuration settings.</param>
+        /// <returns>The service collection with Identity and JWT authentication services configured.</returns>
     public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
     {
 

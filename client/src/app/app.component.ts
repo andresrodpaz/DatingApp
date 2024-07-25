@@ -39,5 +39,5 @@ export class AppComponent implements OnInit {
     this.accountService.setCurrentUser(user);
   }
 
-  title = 'Dating App';
+  title = 'HumanConnect';
 }

@@ -8,10 +8,12 @@ namespace API.Middleware
     public class UpdateLastActiveMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly IUnitOfWork _uow;
 
-        public UpdateLastActiveMiddleware(RequestDelegate next)
+        public UpdateLastActiveMiddleware(RequestDelegate next, IUnitOfWork uow)
         {
             _next = next;
+            _uow = uow;
         }
 
         public async Task InvokeAsync(HttpContext context, IUserRepository userRepository)
@@ -28,7 +30,7 @@ namespace API.Middleware
                 if (user != null)
                 {
                     user.LastActive = DateTime.UtcNow;
-                    await userRepository.SaveAllAsync();
+                    await _uow.Complete();
                 }
             }
         }

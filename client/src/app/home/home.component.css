@@ -1,0 +1,381 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+/* Global CSS for Angular App */
+body {
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Montserrat-Bold", sans-serif;
+}
+
+p {
+  color: #8f8f8f;
+}
+
+/* Headings */
+.big-heading {
+  font-family: "Montserrat-Black", sans-serif;
+  font-size: 3.5rem;
+  line-height: 1.5;
+}
+
+.section-heading {
+  font-size: 3rem;
+  line-height: 1.5;
+}
+
+/* Containers */
+.container-fluid {
+  padding: 0; /* Remove default padding */
+}
+
+/* Sections */
+.colored-section, .white-section {
+  width: 100%; /* Ensure sections take up full width */
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
+}
+
+.colored-section {
+  background-color: #ff4c68;
+  color: #fff;
+}
+
+.white-section {
+  background-color: #fff;
+}
+
+/* Buttons */
+.download-button {
+  margin: 5% 3% 5% 0;
+}
+
+.signup-button {
+  margin: 5% 3% 5% 0;
+  background-color: #ff4c68;
+  color: white;
+  border: 1px solid white;
+}
+
+/* Title Section */
+#title {
+  background-color: #ff4c68;
+  color: #fff;
+  text-align: center; /* Center text horizontally */
+  padding: 5% 0; /* Adjust vertical padding */
+  min-height: 100px; /* Make sure it takes up the full viewport height */
+  display: flex;
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+  width: 100%; /* Ensure full width */
+  border-radius: 15px;
+}
+
+#title .container-fluid {
+  padding: 0; /* Remove container padding */
+}
+
+#title .row {
+  justify-content: center; /* Center content in the row */
+}
+
+#title .col-lg-6 {
+  text-align: center; /* Center text within the column */
+}
+
+#title h1 {
+  font-size: 3.5rem;
+  font-family: "Montserrat-Black", sans-serif;
+  margin-bottom: 1rem;
+}
+
+#title p {
+  color: #fff; /* Ensure the text is white */
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+#title .btn-custom {
+  background-color: #ffffff;
+  color: #ff4c68;
+  border: 2px solid #ff4c68;
+  padding: 0.75rem 1.5rem; /* Adjust padding for a larger button */
+  border-radius: 50px; /* Rounded edges */
+  font-weight: 700; /* Bold text */
+  text-transform: uppercase; /* Uppercase text */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#title .btn-custom i {
+  margin-right: 8px; /* Space between icon and text */
+}
+
+#title .btn-custom:hover {
+  background-color: #8f8f8f;
+  color: #ffffff;
+  border: 2px solid #ff4c68;
+}
+
+#title .btn-custom:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 76, 104, 0.5); /* Focus outline */
+}
+
+
+
+/* Features Section */
+#features {
+  width: 100%; /* Ensure full width */
+  padding: 5% 0; /* Adjust vertical padding */
+}
+
+.feature-title {
+  font-size: 1.5rem;
+}
+
+.feature-box {
+  padding: 4.5%;
+}
+
+.icon {
+  color: #ef8172;
+  margin-bottom: 1rem;
+}
+
+.icon:hover {
+  color: #ff4c68;
+}
+
+/* Testimonial Section */
+#testimonials {
+  background-color: #ef8172;
+  padding: 5% 0; /* Add vertical padding */
+  width: 100%; /* Ensure full width */
+  border-radius: 15px; /* Rounded corners */
+  overflow: hidden; /* Ensure content does not overflow the rounded corners */
+  text-align: center; /* Center text horizontally */
+}
+
+.container {
+  max-width: 1200px; /* Adjust max-width as needed */
+  margin: 0 auto; /* Center container horizontally */
+}
+
+.testimonial-item {
+  background-color: #fff; /* Background color for each testimonial */
+  color: #000; /* Text color */
+  border-radius: 15px; /* Rounded corners for each testimonial */
+  padding: 2rem; /* Padding inside each testimonial */
+  margin: 1rem auto; /* Space between testimonials */
+  max-width: 80%; /* Optional: constrain the width */
+}
+
+.testimonial-text {
+  font-size: 2rem; /* Adjust font size for better readability */
+  color: #000;
+  margin-bottom: 1rem;
+  max-width: 100%; /* Ensure the text fits within the container */
+}
+
+
+.testimonial-image {
+  width: 100px; /* Set the width to your desired size */
+  height: 100px; /* Set the height to the same size as width */
+  border-radius: 50%; /* Make the image round */
+  object-fit: cover; /* Ensure the image covers the circular area */
+  margin: 10px auto; /* Center the image */
+  display: block; /* Center image in block-level container */
+}
+
+
+.testimonial-item em {
+  display: block; /* Ensures the text is displayed as a block */
+  margin-top: 10px; /* Space between the image and the name */
+  color: #000; /* Text color */
+  font-size: 1.25rem; /* Adjust font size */
+}
+
+
+/* Press Section */
+.colored-section {
+  background-color: #f5f5f5; /* Light gray background */
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.press-logos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.press-logo {
+  max-width: 100px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.press-logo:hover {
+  transform: scale(1.1);
+}
+
+#press {
+  margin-top: 10px;
+  background-color: #ff4c68;
+  padding: 5% 0; /* Adjust vertical padding */
+  width: 100%; /* Ensure full width */
+  border-radius: 15px;
+}
+
+.press-logo {
+  width: 15%;
+  margin: 20px 20px 50px;
+}
+
+/* Pricing Section */
+.white-section {
+  background-color: #fff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.section-heading {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.section-subheading {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+.pricing-column {
+  margin-bottom: 30px;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-header {
+  background-color: #EB6864;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.price-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #EB6864;
+  margin-bottom: 15px;
+}
+
+.card-detail {
+  font-size: 14px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-outline-dark {
+  border-color: #EB6864;
+  color: #EB6864;
+  font-weight: 600;
+}
+
+.btn-outline-dark:hover {
+  background-color: #EB6864;
+  color: #fff;
+}
+
+.btn-plan {
+  background-color: #EB6864;
+  border-color: #EB6864;
+}
+
+.btn-plan:hover {
+  background-color: #d85550;
+  border-color: #d85550;
+}
+
+#pricing {
+  padding: 100px;
+  width: 100%; /* Ensure full width */
+}
+
+.price-text {
+  font-size: 3rem;
+  line-height: 1.5;
+}
+
+.pricing-column {
+  padding: 3% 2%;
+}
+
+/* CTA Section */
+#cta {
+  background-color: #ff4c68;
+  color: #fff;
+  text-align: center;
+  padding: 5% 0; /* Adjust vertical padding */
+  width: 100%; /* Ensure full width */
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+.download-button {
+  margin: 5% 3% 5% 0;
+}
+
+/* Footer Section */
+.social-icon {
+  margin: 20px 10px;
+}
+
+@media (max-width: 1028px) {
+  #title {
+    text-align: center;
+  }
+
+  .title-image {
+    position: static;
+    transform: rotate(0);
+  }
+}

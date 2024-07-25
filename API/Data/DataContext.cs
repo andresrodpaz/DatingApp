@@ -16,9 +16,16 @@ IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, IdentityRoleClaim<i
     public DbSet<Message> Messages {get; set;}
     public DbSet<Group> Groups {get; set;}
     public DbSet<Connection> Connections {get; set;}
+    public DbSet<AppUser> AppUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder){
         base.OnModelCreating(builder);
+
+         var dateOnlyConverter = new DateOnlyConverter();
+
+        builder.Entity<AppUser>()
+            .Property(e => e.DateOfBirth)
+            .HasConversion(dateOnlyConverter);
 
         builder.Entity<AppUser>()
             .HasMany(ur => ur.UserRoles)
@@ -45,7 +52,7 @@ IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, IdentityRoleClaim<i
         .HasOne(s => s.TargetUser)
         .WithMany(l => l.LikedByUsers)
         .HasForeignKey(s => s.TargetUserId)
-        .OnDelete(DeleteBehavior.Cascade);
+        .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Message>()
         .HasOne(u => u.Recipient)

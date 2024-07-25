@@ -25,15 +25,26 @@ export class MemberListComponent implements OnInit {
     { value: 'other', display: 'Others' }
   ];
 
-
+  /**
+   * Initializes the MemberListComponent with the MembersService.
+   * @param memberSvc - The MembersService for managing member data.
+   */
   constructor(private memberSvc: MembersService) {
       this.userParams = this.memberSvc.getUserParams();
   }
 
+  /**
+   * Angular lifecycle hook that initializes the component.
+   * Loads the list of members based on current user parameters.
+   */
   ngOnInit(): void {
     this.loadMembers();
   }
 
+  /**
+   * Loads members based on user parameters.
+   * Updates the members list and pagination information upon receiving response.
+   */
   loadMembers() {
     if (this.userParams) {
       this.memberSvc.setUserParams(this.userParams);
@@ -45,10 +56,12 @@ export class MemberListComponent implements OnInit {
           }
         }
       });
-    };
-
+    }
   }
 
+  /**
+   * Resets user filters to default values and reloads members.
+   */
   resetFilters() {
     if (this.user) {
       this.userParams = this.memberSvc.resetUserParams();
@@ -56,15 +69,16 @@ export class MemberListComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles page changes in pagination.
+   * Updates the user parameters and reloads members for the selected page.
+   * @param event - The pagination change event.
+   */
   pageChanged(event: any) {
     if (this.userParams && this.userParams.pageNumber !== event.page) {
       this.userParams.pageNumber = event.page;
-      this.memberSvc.setUserParams(this.userParams)
+      this.memberSvc.setUserParams(this.userParams);
       this.loadMembers();
     }
   }
-
-
-
-
 }
